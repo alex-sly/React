@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# Базовый React
+
+Учебный проект на курсе Базовый React от Glo Academy. Автор курса — Максим Лескин.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
