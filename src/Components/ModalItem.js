@@ -45,13 +45,23 @@ const HeaderContent = styled.div`
   font-size: 24px;
 `;
 
-export const ModalItem = ({ openItem, setOpenItem }) => {
+export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
   function closeModal(event) {
     if (event.target.id === "overlay") {
       setOpenItem(null);
     }
   }
-  if (!openItem) return null;
+
+  const order = {
+    ...openItem,
+  };
+
+  const addToOrder = () => {
+    setOrders([...orders, order]);
+    setOpenItem(null);
+  };
+
+  // if (!openItem) return null;
   return (
     <Overlay id="overlay" onClick={closeModal}>
       <Modal>
@@ -61,7 +71,7 @@ export const ModalItem = ({ openItem, setOpenItem }) => {
             <div>{openItem.name}</div>
             <div>{openItem.price}</div>
           </HeaderContent>
-          <ButtonCheckout>Добавить</ButtonCheckout>
+          <ButtonCheckout onClick={addToOrder}>Добавить</ButtonCheckout>
         </Content>
       </Modal>
     </Overlay>
