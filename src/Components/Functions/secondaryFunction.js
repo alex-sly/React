@@ -1,7 +1,7 @@
 // import React from "react";
 
 export const totalPriceItems = (order) => {
-  const countToping = order.topping && order.topping.filter((item) => item.checked).length;
+  const countTopping = order.topping && order.topping.filter((item) => item.checked).length;
   const priceTopping = order.price * 0.1 * countTopping;
   return (order.price + priceTopping) * order.count;
 };
