@@ -28,8 +28,8 @@ const Item = styled.li`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: black;
-    opacity: 30%;
+    /* background-color: black; */
+    /* opacity: 10%; */
     z-index: -1;
   }
   &:hover {
