@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { ListItem } from "./ListItem";
 import { Banner } from "./Banner";
 import { useFetch } from "../Hooks/useFetch";
+import loadingImage from "../../image/loading.gif";
 
 const MenuStyled = styled.main`
   background-color: #ccc;
@@ -36,7 +37,7 @@ export const Menu = ({ setOpenItem }) => {
       ) : res.error ? (
         <div>Sorry, we will fix it soon...</div>
       ) : (
-        <div>Loading...</div>
+        <img src={loadingImage} alt="Loading..." />
       )}
     </MenuStyled>
   );
