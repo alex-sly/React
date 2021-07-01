@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { ButtonCheckout } from "../Order/ButtonCheckout";
 import { CountItem } from "./CountItem";
@@ -9,6 +9,7 @@ import { Toppings } from "./Toppings";
 import { Choices } from "./Choices";
 import { useToppings } from "../Hooks/useToppings";
 import { useChoices } from "../Hooks/useChoices";
+import { Context } from "../Functions/context";
 
 export const Overlay = styled.div`
   position: fixed;
@@ -58,62 +59,71 @@ const TotalPriceItem = styled.div`
   justify-content: space-between;
 `;
 
-export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
-  const counter = UseCount(openItem.count);
-  const toppings = useToppings(openItem);
-  const choices = useChoices(openItem);
-  const isEdit = openItem.index > -1;
+export const ModalItem = () =>
+  // { openItem, setOpenItem, orders, setOrders }
+  {
+    const {
+      openItem: { openItem, setOpenItem },
+    } = useContext(Context);
+    const {
+      orders: { orders, setOrders },
+    } = useContext(Context);
 
-  const closeModal = (event) => {
-    if (event.target.id === "overlay") {
+    const counter = UseCount(openItem.count);
+    const toppings = useToppings(openItem);
+    const choices = useChoices(openItem);
+    const isEdit = openItem.index > -1;
+
+    const closeModal = (event) => {
+      if (event.target.id === "overlay") {
+        setOpenItem(null);
+      }
+    };
+
+    const order = {
+      ...openItem,
+      count: counter.count,
+      topping: toppings.toppings,
+      choice: choices.choice,
+    };
+
+    const editOrder = () => {
+      const newOrders = [...orders];
+      newOrders[openItem.index] = order;
+      setOrders(newOrders);
       setOpenItem(null);
-    }
-  };
+    };
 
-  const order = {
-    ...openItem,
-    count: counter.count,
-    topping: toppings.toppings,
-    choice: choices.choice,
-  };
+    const addToOrder = () => {
+      setOrders([...orders, order]);
+      setOpenItem(null);
+    };
 
-  const editOrder = () => {
-    const newOrders = [...orders];
-    newOrders[openItem.index] = order;
-    setOrders(newOrders);
-    setOpenItem(null);
+    // if (!openItem) return null;
+    return (
+      <Overlay id="overlay" onClick={closeModal}>
+        <Modal>
+          <Banner img={openItem.img} />
+          <Content>
+            <HeaderContent>
+              <div>{openItem.name}</div>
+              <div>{formatCurrency(openItem.price)}</div>
+            </HeaderContent>
+            <CountItem {...counter} />
+            {openItem.toppings && <Toppings {...toppings} />}
+            {openItem.choices && <Choices {...choices} openItem={openItem} />}
+            <TotalPriceItem>
+              <span>Цена:</span>
+              <span>{formatCurrency(totalPriceItems(order))}</span>
+            </TotalPriceItem>
+            <ButtonCheckout
+              onClick={isEdit ? editOrder : addToOrder}
+              disabled={order.choices && !order.choice}
+            >
+              {isEdit ? "Редактировать" : "Добавить"}
+            </ButtonCheckout>
+          </Content>
+        </Modal>
+      </Overlay>
+    );
   };
-
-  const addToOrder = () => {
-    setOrders([...orders, order]);
-    setOpenItem(null);
-  };
-
-  // if (!openItem) return null;
-  return (
-    <Overlay id="overlay" onClick={closeModal}>
-      <Modal>
-        <Banner img={openItem.img} />
-        <Content>
-          <HeaderContent>
-            <div>{openItem.name}</div>
-            <div>{formatCurrency(openItem.price)}</div>
-          </HeaderContent>
-          <CountItem {...counter} />
-          {openItem.toppings && <Toppings {...toppings} />}
-          {openItem.choices && <Choices {...choices} openItem={openItem} />}
-          <TotalPriceItem>
-            <span>Цена:</span>
-            <span>{formatCurrency(totalPriceItems(order))}</span>
-          </TotalPriceItem>
-          <ButtonCheckout
-            onClick={isEdit ? editOrder : addToOrder}
-            disabled={order.choices && !order.choice}
-          >
-            {isEdit ? "Редактировать" : "Добавить"}
-          </ButtonCheckout>
-        </Content>
-      </Modal>
-    </Overlay>
-  );
-};
