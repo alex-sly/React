@@ -41,24 +41,15 @@ function App() {
         openItem,
         orders,
         orderConfirm,
+        firebaseDatabase: firebase.database,
       }}
     >
       <GlobalStyle />
       <NavBar />
-      {/* <Order {...orders} {...openItem} {...auth} {...orderConfirm} /> */}
       <Order />
       <Menu />
-      {/* {openItem.openItem && <ModalItem {...openItem} {...orders} />} */}
       {openItem.openItem && <ModalItem />}
-      {orderConfirm.openOrderConfirm && (
-        // <OrderConfirm
-        //   {...orders}
-        //   {...auth}
-        //   {...orderConfirm}
-        //   firebaseDatsbase={firebase.database}
-        // />
-        <OrderConfirm firebaseDatsbase={firebase.database} />
-      )}
+      {orderConfirm.openOrderConfirm && <OrderConfirm />}
     </Context.Provider>
   );
 }

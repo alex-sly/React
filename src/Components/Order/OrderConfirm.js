@@ -40,24 +40,15 @@ const sendOrder = (dataBase, orders, authentication) => {
   });
 };
 
-export const OrderConfirm = ({
-  // orders,
-  // setOrders,
-  // authentication,
-  // setOpenOrderConfirm,
-  firebaseDatsbase,
-}) => {
+export const OrderConfirm = () => {
   const {
     orders: { orders, setOrders },
-  } = useContext(Context);
-  const {
     auth: { authentication },
-  } = useContext(Context);
-  const {
     orderConfirm: { setOpenOrderConfirm },
+    firebaseDatabase,
   } = useContext(Context);
 
-  const dataBase = firebaseDatsbase();
+  const dataBase = firebaseDatabase();
   const total = orders.reduce((result, order) => totalPriceItems(order) + result, 0);
 
   return (
@@ -70,7 +61,7 @@ export const OrderConfirm = ({
           <TotalPrice>{formatCurrency(total)}</TotalPrice>
         </Total>
         <ButtonCheckout
-          omClick={() => {
+          onClick={() => {
             sendOrder(dataBase, orders, authentication);
             setOrders([]);
             setOpenOrderConfirm(false);

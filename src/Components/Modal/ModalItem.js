@@ -64,8 +64,6 @@ export const ModalItem = () =>
   {
     const {
       openItem: { openItem, setOpenItem },
-    } = useContext(Context);
-    const {
       orders: { orders, setOrders },
     } = useContext(Context);
 
